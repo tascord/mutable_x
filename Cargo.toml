@@ -1,0 +1,16 @@
+[package]
+name = "mutablex"
+description = "A horrid macro for making mutables of X size"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+futures-signals = "0.3.33"
+proc-macro2 = "1.0.70"
+quote = "1.0.33"
+static_assertions = "1.1.0"
+syn = "2.0.40"
