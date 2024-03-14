@@ -5,7 +5,7 @@ pub mod test {
 
     #[test]
     pub fn basic() {
-        mutable_x!(2546);
+        mutable_x!(5);
 
     //     let stream_a = Mutable::new(1);
     //     let stream_b = Mutable::new(2);

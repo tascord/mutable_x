@@ -55,7 +55,7 @@ pub fn mutable_x(input: TokenStream) -> TokenStream {
 
     let generics = make_generic(true, number);
     let variables = make_generic(false, number);
-    let numbers = (0..number).collect::<Vec<usize>>();
+    let numbers = (0..number).map(syn::Index::from).collect::<Vec<_>>();
     let mut_name = format_ident!("Mutable{}", number);
     let number = Lit::Int(LitInt::new(&number.to_string(), Span::call_site()));
 
@@ -81,7 +81,7 @@ pub fn mutable_x(input: TokenStream) -> TokenStream {
         {
             type Item = (#(#generics),*);
             fn poll_change(mut self: std::pin::Pin<&mut Self>, cx: &mut std::task::Context) -> std::task::Poll<Option<Self::Item>> {
-                #(let #variables = std::pin::Pin::new(&mut self.#numbers .0).poll_change(cx);)*
+                #(let #variables = std::pin::Pin::new(&mut self.#numbers.0).poll_change(cx);)*
                 let mut changed = false;
                 let mut complete = 0;
 
@@ -100,7 +100,7 @@ pub fn mutable_x(input: TokenStream) -> TokenStream {
                 if changed {
                     std::task::Poll::Ready(
                         Some((
-                            #(self.#numbers .1.get_cloned()),*
+                            #(self.#numbers.1.get_cloned()),*
                         ))
                     )
                 } else if complete == #number {
